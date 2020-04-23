@@ -1,0 +1,16 @@
+# macOS specific files:
+.DS_Store
+
+# Cache files:
+*.log
+*.pot
+*.pyc
+__pycache__/
+.idea/
+
+# Project specific files and directories:
+db*.sqlite3
+config*.json
+**/migrations/*
+# Project exclude paths
+/venv/

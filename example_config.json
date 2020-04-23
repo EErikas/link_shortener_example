@@ -1,0 +1,8 @@
+{
+  "DEBUG": true,
+  "ALLOWED_HOSTS": [],
+  "SECRET_KEY": "k&m4prle^@f6x20%_s2qo8suo9e4r&%@+uoz6b5qz*&f8&(w+w",
+  "DEFAULT_ADMIN_NAME": "admin",
+  "DEFAULT_ADMIN_PASSWORD": "admin",
+  "DEFAULT_ADMIN_EMAIL": "admin@adm.in"
+}

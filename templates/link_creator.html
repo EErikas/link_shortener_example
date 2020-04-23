@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h1 class="mt-5">Shorten your URL below!</h1>
+    <form class="form" method="post">
+        {% csrf_token %}
+        {{ url_form|crispy }}
+        <button type="submit" class="btn btn-secondary mb-2">Shorten URL!</button>
+    </form>
+{% endblock %}
