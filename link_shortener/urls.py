@@ -15,11 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from links.views import link_creator, link_redirector, link_list, check_admin
+from links.views import link_creator, link_redirector, link_list
 
 urlpatterns = [
     path('admin/admin', admin.site.urls),
-    path('admin/check', check_admin, name='admin-checker'),
     path('', link_creator, name='creator'),
     path('<str:link_code>', link_redirector, name='redirect'),
     path('show/urls', link_list, name='links')

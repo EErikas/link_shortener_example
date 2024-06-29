@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
-from link_shortener.settings import DEFAULT_ADMIN_NAME, DEFAULT_ADMIN_EMAIL, DEFAULT_ADMIN_PASSWORD
 from .models import Link
 from .forms import LinkForm
 
@@ -39,17 +38,3 @@ def link_list(request):
     return render(request, 'shortened_links.html',
                   context={'title': 'List of URLs',
                            'urls': urls})
-
-
-def check_admin(request):
-    # If there are no users who have admin rights and are active...
-    if not User.objects.filter(is_staff=True).filter(is_superuser=True).filter(is_active=True):
-        # ... a new default user is created with details from settings.py
-        admin = User(username=DEFAULT_ADMIN_NAME,
-                     email=DEFAULT_ADMIN_EMAIL,
-                     is_staff=True,
-                     is_superuser=True)
-        admin.set_password(DEFAULT_ADMIN_PASSWORD)
-        admin.save()
-    # User is redirected to the admin page
-    return redirect('admin:index')
