@@ -11,5 +11,6 @@ __pycache__/
 # Project specific files and directories:
 db*.sqlite3
 config*.json
+settings.env
 # Project exclude paths
 venv

@@ -1,9 +1,22 @@
-import string
 from django.db import models
-from django.utils.crypto import get_random_string
 
 
-# Create your models here.
 class Link(models.Model):
-    shortened_link = models.CharField(max_length=5, unique=True, default=get_random_string(5, allowed_chars=string.ascii_letters + string.digits))
     original_url = models.URLField(verbose_name='Original URL')
+    shortened_link = models.CharField(verbose_name='Shortened URL', max_length=7, unique=True, blank=True)
+    
+    # Override default insert method to ignore shortened_url field as it is being generated on the DB
+    def _do_insert(self, manager, using, fields, update_pk, raw):
+        return super(Link, self)._do_insert(
+            manager, using,
+            [f for f in fields if f.attname not in ['shortened_link']],
+            update_pk, raw)
+
+    def __str__(self) -> str:
+        return f'{self.shortened_link} -> {self.original_url}'
+
+class Click(models.Model):
+    source_ip = models.GenericIPAddressField()
+    time = models.TimeField(auto_now=True)
+    link = models.ForeignKey(Link, on_delete=models.CASCADE)
+    

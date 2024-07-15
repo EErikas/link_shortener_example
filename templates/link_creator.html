@@ -7,4 +7,39 @@
         {{ url_form|crispy }}
         <button type="submit" class="btn btn-secondary mb-2">Shorten URL!</button>
     </form>
+
+    <h1 class="mt-5">Shortened URLs:</h1>
+
+
+    <nav>
+        <ul class="pagination">
+            {% if urls.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ urls.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% for page_number in urls.paginator.page_range %}
+                <li class="page-item {% if page_number == urls.number %}active{% endif %}"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+            {% endfor %}
+            {% if urls.has_next %}
+                <li class="page-item "><a class="page-link" href="?page={{ urls.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Short URL</th>
+            <th scope="col">Original URL</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for url in urls %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a href="{{ url.shortened_link }}" target="_blank" rel="noopener noreferrer">{{ site_url }}/{{ url.shortened_link }}</a></td>
+                <td><a href="{{ url.original_url }}" target="_blank" rel="noopener noreferrer">{{ url.original_url }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

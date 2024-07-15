@@ -11,29 +11,22 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-config_file_dir = os.path.join(BASE_DIR, 'config.json')
-if os.path.exists(config_file_dir):
-    # Read config file if it exists
-    with open(config_file_dir, 'r', encoding='utf-8') as config_file:
-        config = json.load(config_file)
-else:
-    # Set config to empty dictionary to use default values
-    config = {}
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config.get('SECRET_KEY', 'k&m4prle^@f6x20%_s2qo8suo9e4r&%@+uoz6b5qz*&f8&(w+w')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config.get('DEBUG', True)
+DEBUG = os.environ.get('DEBUG', False)
 
-ALLOWED_HOSTS = config.get('ALLOWED_HOSTS', [])
+hosts = os.environ.get('ALLOWED_HOSTS', None)
+if hosts:
+    ALLOWED_HOSTS = hosts.split(',')
+else:
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -84,8 +77,12 @@ WSGI_APPLICATION = 'link_shortener.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD')
     }
 }
 
@@ -125,8 +122,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-# Default admin settings
-DEFAULT_ADMIN_NAME = config.get('DEFAULT_ADMIN_NAME', 'admin')
-DEFAULT_ADMIN_PASSWORD = config.get('DEFAULT_ADMIN_PASSWORD', 'admin')
-DEFAULT_ADMIN_EMAIL = config.get('DEFAULT_ADMIN_EMAIL', 'admin@adm.in')
